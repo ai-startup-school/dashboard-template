@@ -46,8 +46,6 @@ export const serverEnv = {
  * To expose them to the client, prefix them with `NEXT_PUBLIC_`.
  */
 export const clientSchema = z.object({
-  NEXT_PUBLIC_URL: z.string(),
-
   // Supabase
   NEXT_PUBLIC_SUPABASE_URL: z.string(),
   NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string(),
@@ -60,8 +58,6 @@ export const clientSchema = z.object({
  * @type {{ [k in keyof z.input<typeof clientSchema>]: string | undefined }}
  */
 export const clientEnv = {
-  NEXT_PUBLIC_URL: process.env.NEXT_PUBLIC_URL,
-
   // Supabase
   NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
   NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
