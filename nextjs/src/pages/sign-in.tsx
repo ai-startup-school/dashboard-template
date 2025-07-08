@@ -4,6 +4,9 @@ import { createClient } from "@/utils/supabase/component";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { appConfig } from "@/config/app";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { CheckCircle } from "lucide-react";
 
 /* 
 Function to parse URL params. This is required because the auth flow from
@@ -118,6 +121,12 @@ export default function Page() {
     handleAuthRedirect();
   }, [router, toast]);
 
+  // Handle sign out
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.push("/sign-in");
+  };
+
   // Handle sign in
   async function handleSignIn(e: React.FormEvent) {
     e.preventDefault();
@@ -161,27 +170,41 @@ export default function Page() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
-      <div className="w-full max-w-md space-y-8 rounded-lg bg-white p-6 shadow-md">
-        {user && !userLoading ? (
-          <div className="flex flex-col items-center space-y-6">
-            <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-              You're already signed in
-            </h2>
-            <button
+      {user && !userLoading ? (
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <div className="mx-auto mb-4">
+              <CheckCircle className="h-16 w-16 text-green-500" />
+            </div>
+            <CardTitle className="text-2xl">Already Signed In</CardTitle>
+            <CardDescription>
+              Welcome back! You're already signed in and can continue to your dashboard.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-center space-y-3">
+            <Button
               onClick={() => router.push("/admin")}
-              className="group relative flex w-full justify-center rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+              className="w-full"
             >
               Go to Dashboard
-            </button>
-          </div>
-        ) : (
-          <>
-            <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-              Sign In
-            </h2>
+            </Button>
+            <Button
+              onClick={handleSignOut}
+              variant="outline"
+              className="w-full"
+            >
+              Sign Out
+            </Button>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="w-full max-w-md space-y-8 rounded-lg bg-white p-6 shadow-md">
+          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+            Sign In
+          </h2>
 
-            {/* Only show form if user is not signed in */}
-            {!user && !userLoading && (
+          {/* Only show form if user is not signed in */}
+          {!user && !userLoading && (
               <form className="mt-8 space-y-6" onSubmit={handleSignIn}>
                 <div className="-space-y-px rounded-md shadow-sm">
                   <div>
@@ -247,9 +270,8 @@ export default function Page() {
                 )}
               </form>
             )}
-          </>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
