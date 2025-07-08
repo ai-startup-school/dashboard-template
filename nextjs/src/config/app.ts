@@ -34,7 +34,7 @@ export const appConfig = {
     navigation: [
       {
         title: "Twitter Monitoring",
-        items: [
+        subItems: [
           { title: "Dashboard", url: "/admin/twitter" },
         ],
       },
