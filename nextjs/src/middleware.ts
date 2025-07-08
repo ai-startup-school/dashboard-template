@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import { updateSession } from "./utils/supabase/middleware";
 
 export async function middleware(request: NextRequest) {
-  // Only check authentication for admin routes
+  // Check authentication for admin routes (dashboard)
   if (request.nextUrl.pathname.startsWith("/admin")) {
     return await updateSession(request);
   }
