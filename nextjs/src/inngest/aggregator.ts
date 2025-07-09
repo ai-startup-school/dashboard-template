@@ -11,10 +11,6 @@ import { Database } from "@shared-types/database.types";
  * can be retried safely if it fails.
  */
 
-/*
- Constants
-*/
-const HOW_OFTEN_TO_CHECK_TWEETS = 3; // 3 hours 
 
 /*
  Helper types 
@@ -63,14 +59,14 @@ interface TwitterApi45Response {
 // ---------------------------------------------------------------------------
 //  Aggregator workflow – executed hourly via Inngest cron
 // ---------------------------------------------------------------------------
-export const aggregateContent = inngestClient.createFunction(
+export const aggregatorRun = inngestClient.createFunction(
   {
     // Unique identifier for this function in Inngest
     id: "aggregator/run",
   },
   {
     // event: "aggregator/run",
-    cron: `0 */${HOW_OFTEN_TO_CHECK_TWEETS} * * *`, // Run every 6 hours at minute 0
+    cron: `0 * * * *`, // Run every hour at minute 0
   },
   async ({ step, logger }) => {
 

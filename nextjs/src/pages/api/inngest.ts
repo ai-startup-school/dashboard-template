@@ -1,4 +1,4 @@
-import { accountCreated } from "@/inngest/account";
+import { aggregatorRun } from "@/inngest/aggregator";
 import { inngestClient } from "@/lib/clients/inngest";
 import { serve } from "inngest/next";
 
@@ -9,7 +9,7 @@ export const config = {
 export default serve({
   client: inngestClient,
   functions: [
-    // Account
-    accountCreated,
+    // Aggregator
+    aggregatorRun,
   ],
 });
