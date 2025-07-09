@@ -41,16 +41,6 @@ CREATE TABLE IF NOT EXISTS public.tweets (
   inserted_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- Link fetch table for storing fetched link content
-CREATE TABLE IF NOT EXISTS public.link_fetch (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  url TEXT NOT NULL UNIQUE,                 -- canonicalised URL
-  tweet_id BIGINT REFERENCES public.tweets(id) ON DELETE SET NULL,
-  fetched_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  status_code SMALLINT,                     -- HTTP status from crawler
-  content TEXT                              -- raw HTML or extracted article text
-);
-
 -- ============================================================================
 -- INDEXES FOR PERFORMANCE
 -- ============================================================================
@@ -64,20 +54,13 @@ CREATE INDEX IF NOT EXISTS idx_tweets_account_created_at ON public.tweets (accou
 CREATE INDEX IF NOT EXISTS idx_tweets_thread_id ON public.tweets (thread_id);
 CREATE INDEX IF NOT EXISTS idx_tweets_created_at ON public.tweets (created_at DESC);
 
--- Link fetch indexes
-CREATE INDEX IF NOT EXISTS idx_link_fetch_url ON public.link_fetch (url);
-CREATE INDEX IF NOT EXISTS idx_link_fetch_tweet_id ON public.link_fetch (tweet_id);
-
 -- ============================================================================
 -- ROW LEVEL SECURITY (RLS)
 -- ============================================================================
 
 -- Enable RLS on all tables
-ALTER TABLE public.user_profiles ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.user_preferences ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.twitter_accounts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.tweets ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.link_fetch ENABLE ROW LEVEL SECURITY;
 
 -- ============================================================================
 -- RLS POLICIES
@@ -95,13 +78,6 @@ CREATE POLICY "Authenticated users can view tweets" ON public.tweets
   FOR SELECT TO authenticated USING (true);
 
 CREATE POLICY "Authenticated users can manage tweets" ON public.tweets
-  FOR ALL TO authenticated USING (true);
-
--- Link fetch policies
-CREATE POLICY "Authenticated users can view link fetch" ON public.link_fetch
-  FOR SELECT TO authenticated USING (true);
-
-CREATE POLICY "Authenticated users can manage link fetch" ON public.link_fetch
   FOR ALL TO authenticated USING (true);
 
 -- ============================================================================
