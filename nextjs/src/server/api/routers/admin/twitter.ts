@@ -112,12 +112,6 @@ export const twitterRouter = createTRPCRouter({
           `
           *,
           twitter_account:twitter_accounts(username),
-          links:link_fetch(
-            url,
-            content,
-            fetched_at,
-            status_code
-          )
         `,
         )
         .order("created_at", { ascending: false })

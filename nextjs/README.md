@@ -83,15 +83,6 @@ CREATE TABLE tweets (
   quote_count INTEGER DEFAULT 0
 );
 
--- Link fetch table (for storing fetched link content)
-CREATE TABLE link_fetch (
-  id SERIAL PRIMARY KEY,
-  url TEXT NOT NULL UNIQUE,
-  content TEXT,
-  fetched_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  status_code INTEGER
-);
-
 -- Indexes for better performance
 CREATE INDEX idx_tweets_account_id ON tweets(account_id);
 CREATE INDEX idx_tweets_created_at ON tweets(created_at DESC);
@@ -104,7 +95,6 @@ CREATE INDEX idx_twitter_accounts_username ON twitter_accounts(username);
 -- Enable RLS
 ALTER TABLE twitter_accounts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE tweets ENABLE ROW LEVEL SECURITY;
-ALTER TABLE link_fetch ENABLE ROW LEVEL SECURITY;
 
 -- Create policies (adjust based on your auth requirements)
 CREATE POLICY "Allow authenticated users to read twitter_accounts" 
@@ -124,16 +114,6 @@ CREATE POLICY "Allow authenticated users to read tweets"
 
 CREATE POLICY "Allow authenticated users to manage tweets" 
   ON tweets FOR ALL 
-  TO authenticated 
-  USING (true);
-
-CREATE POLICY "Allow authenticated users to read link_fetch" 
-  ON link_fetch FOR SELECT 
-  TO authenticated 
-  USING (true);
-
-CREATE POLICY "Allow authenticated users to manage link_fetch" 
-  ON link_fetch FOR ALL 
   TO authenticated 
   USING (true);
 ```
