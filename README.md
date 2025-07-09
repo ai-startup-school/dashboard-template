@@ -1,14 +1,16 @@
-# Social Media Monitor
+# Admin Dashboard Template
 
-A production-ready Next.js template for monitoring social media accounts and posts. Built with TypeScript, tRPC, Supabase, and Tailwind CSS.
+A production-ready Next.js admin dashboard template for monitoring social media accounts and posts. Built with TypeScript, tRPC, Supabase, and Tailwind CSS with complete authentication and role-based access control.
 
 ## 🚀 Features
 
+- **Admin Dashboard**: Complete admin interface with role-based access control
 - **Twitter Monitoring**: Track multiple Twitter accounts and their posts
 - **Real-time Dashboard**: View accounts and posts in a clean, responsive interface
 - **Database Integration**: Powered by Supabase for reliable data storage
 - **Background Jobs**: Uses Inngest for scheduled tasks and data processing
 - **Authentication**: Built-in user authentication with Supabase Auth
+- **Admin Controls**: Secure admin-only sections with email-based authorization
 - **Type Safety**: Full TypeScript support with tRPC for end-to-end type safety
 - **Modern UI**: Beautiful, responsive interface built with Tailwind CSS and Radix UI
 
@@ -27,18 +29,24 @@ Before setting up the project, ensure you have:
 
 ```bash
 git clone <your-repo-url>
-cd social-media-monitor
+cd admin-dashboard-template
+cd nextjs
 npm install
 ```
 
 ### 2. Environment Variables
 
-Create a `.env.local` file in the root directory:
+⚠️ **Important**: Copy the `.env.example` file to `.env.local` and update the values:
+
+```bash
+cp .env.example .env.local
+```
+
+Then edit `.env.local` with your actual values:
 
 ```env
-# Basic Configuration
-NODE_ENV=development
-CLOUDFLARE_TUNNEL_URL=http://localhost:3000
+# OpenAPI (Optional)
+OPENAI_API_KEY=your_openai_api_key
 
 # RapidAPI (Twitter monitoring)
 RAPID_API_KEY=your_rapidapi_key_here
@@ -48,12 +56,35 @@ SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
-# Inngest (Background jobs - optional)
+# Inngest (Background jobs - required in production)
 INNGEST_EVENT_KEY=your_inngest_event_key
 INNGEST_SIGNING_KEY=your_inngest_signing_key
 ```
 
-### 3. Database Setup
+**Never commit your `.env.local` file to version control!** Use the provided `.env.example` as a template.
+
+### 3. Admin Configuration
+
+🔐 **Critical**: Update the admin email addresses in the configuration file:
+
+1. Open `nextjs/src/config/app.ts`
+2. Update the `adminEmails` array with your email addresses:
+
+```typescript
+// Authentication settings
+auth: {
+  enableSignUp: true,
+  enablePasswordReset: true,
+  adminEmails: [
+    "your-email@yourdomain.com", // Replace with your actual email
+    "admin@yourdomain.com",      // Add additional admin emails as needed
+  ] as readonly string[],
+},
+```
+
+⚠️ **Important**: Only users with emails in this array can access admin features. Make sure to add your email before deploying!
+
+### 4. Database Setup
 
 #### Create Supabase Tables
 
@@ -133,7 +164,18 @@ CREATE POLICY "Allow authenticated users to manage tweets"
 3. Copy the URL and anon key to your environment variables
 4. Copy the service role key (keep this secret!)
 
-### 5. Run the Application
+### 5. Development Setup
+
+#### Generate Database Types
+
+To keep your TypeScript types in sync with your Supabase database:
+
+```bash
+# Generate types for your database
+npx supabase gen types typescript --local > ../shared-types/database.types.ts
+```
+
+#### Run the Application
 
 ```bash
 # Development
@@ -144,7 +186,7 @@ npm run build
 npm run start
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) and you'll be redirected to the Twitter monitoring dashboard.
+Visit [http://localhost:3000](http://localhost:3000) and you'll be redirected to the admin dashboard.
 
 ## 🎯 Usage
 
