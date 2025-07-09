@@ -111,7 +111,7 @@ export const twitterRouter = createTRPCRouter({
         .select(
           `
           *,
-          twitter_account:twitter_accounts(username),
+          twitter_account:twitter_accounts(username)
         `,
         )
         .order("created_at", { ascending: false })
