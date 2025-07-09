@@ -84,16 +84,14 @@ const isAdmin = t.middleware(({ next, ctx }) => {
   }
 
   const user = ctx.user;
-  if (process.env.VERCEL_ENV !== "development") {
-    const isAdmin = appConfig.auth.adminEmails.includes(user.email || "");
-    if (!isAdmin) {
-      throw new TRPCError({
-        code: "FORBIDDEN",
-        message:
-          "Only administrators can perform this action, your email is: " +
-          user.email,
-      });
-    }
+  const isAdmin = appConfig.auth.adminEmails.includes(user.email || "");
+  if (!isAdmin) {
+    throw new TRPCError({
+      code: "FORBIDDEN",
+      message:
+        "Only administrators can perform this action, your email is: " +
+        user.email,
+    });
   }
 
   return next({
