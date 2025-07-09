@@ -1,10 +1,12 @@
 import { createClient } from "@/utils/supabase/component";
 import { Session, User } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export function useUser() {
   // Hooks
   const supabase = createClient();
+  const router = useRouter();
 
   // States
   const [user, setUser] = useState<User | null>(null);
@@ -37,6 +39,8 @@ export function useUser() {
   const signOut = async () => {
     await supabase.auth.signOut();
     setUser(null);
+    setSession(null);
+    router.push("/");
   };
 
   return { user, session, loading, signOut };
