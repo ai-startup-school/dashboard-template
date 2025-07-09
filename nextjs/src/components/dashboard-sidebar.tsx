@@ -31,21 +31,6 @@ import {
 
 const items = appConfig.dashboard.navigation;
 
-// Wrapper component to render an SVG from simple-icons data
-function SimpleIconSvg({ icon, className }: { icon: SimpleIcon; className?: string }) {
-  return (
-    <svg
-      role="img"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-    >
-      <title>{icon.title}</title>
-      <path d={icon.path} fill="currentColor" />
-    </svg>
-  );
-}
-
 export default function DashboardSidebar() {
   const { user, signOut } = useUser();
 
@@ -76,7 +61,7 @@ export default function DashboardSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  {item.subItems ? (
+                  {'subItems' in item ? (
                     <Collapsible
                       defaultOpen
                       className="group/collapsible w-full"
@@ -101,7 +86,7 @@ export default function DashboardSidebar() {
                         </SidebarMenuSub>
                       </CollapsibleContent>
                     </Collapsible>
-                  ) : item.url ? (
+                  ) : 'url' in item ? (
                     <SidebarMenuButton asChild>
                       <a href={item.url} className="px-4 py-3">
                         <span>{item.title}</span>
