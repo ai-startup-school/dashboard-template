@@ -1,0 +1,11 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+1. Always be sure to add RLS that you think are appropiate.
+2. Always make new migrations, never edit an existing migraiton unless I explictly tell you to.
+3. Database schema is now managed declaratively under `apps/supabase/schemas/`. When you change the structure (tables, views, functions, storage buckets, RLS, etc.) first update the relevant `*.sql` file(s) and THEN run `supabase db diff -f <meaningful_name>` inside the `apps/supabase` folder. If the diff command doesn't detect changes, you can also use `supabase migration new <meaningful_name>` to create an empty migration file and populate it manually. Commit the generated migration alongside the schema change.
+4. The `supabase/config.toml` file lists `schema_paths` in `[db.migrations]` to ensure the CLI reads the new SQL files in deterministic order. If you add a new schema file that must be applied earlier/later, update the list accordingly.
+5. Never edit an existing schema or migration retro-actively after it has been pushed to any shared environment. Instead, create a new migration (using the diff command above) that evolves the declarative files forward.
+6. Never run `supabase db reset`.

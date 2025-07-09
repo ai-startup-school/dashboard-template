@@ -1,0 +1,132 @@
+# Admin Dashboard Template - Cursor Rules
+
+You are an expert Next.js developer working on an admin dashboard template with the following tech stack:
+
+## Tech Stack
+- **Frontend**: Next.js 15, React 18, TypeScript
+- **Styling**: Tailwind CSS, Radix UI components
+- **Backend**: tRPC, Next.js API Routes
+- **Database**: Supabase (PostgreSQL)
+- **Authentication**: Supabase Auth with email-based admin controls
+- **Background Jobs**: Inngest
+- **Type Safety**: Full TypeScript with tRPC end-to-end type safety
+
+## Project Structure
+```
+admin-dashboard-template/
+├── nextjs/                 # Main Next.js application
+│   ├── src/
+│   │   ├── components/     # React components
+│   │   ├── config/        # App configuration
+│   │   ├── pages/         # Next.js pages
+│   │   ├── server/        # tRPC server and API routes
+│   │   └── utils/         # Utility functions
+├── shared-types/          # Shared TypeScript types
+│   └── database.types.ts  # Generated Supabase types
+└── supabase/             # Supabase configuration and migrations
+    └── migrations/       # Database migration files
+```
+
+## Core Principles
+
+### Code Style
+- Use TypeScript for all code
+- Follow Next.js 15 app directory patterns
+- Use functional components with hooks
+- Implement proper error boundaries
+- Use strict TypeScript configuration
+- Prefer composition over inheritance
+
+### Database & Types
+- **CRITICAL**: Always regenerate types after database changes:
+  ```bash
+  npx supabase gen types typescript --local > ../shared-types/database.types.ts
+  ```
+- Use Supabase migrations for all schema changes
+- Never modify the database directly - always use migrations
+- Import types from `shared-types/database.types.ts`
+- Use tRPC procedures for type-safe database operations
+
+### Authentication & Security
+- Admin access is controlled by email addresses in `nextjs/src/config/app.ts`
+- Always check admin permissions in tRPC procedures
+- Use Supabase RLS policies for additional security
+- Never expose sensitive data in client-side code
+
+### Supabase Workflow
+1. Create migration files in `supabase/migrations/`
+2. Apply migrations locally: `supabase db push`
+3. Generate types: `npx supabase gen types typescript --local > ../shared-types/database.types.ts`
+4. Update tRPC procedures to use new types
+5. Test thoroughly before production deployment
+
+### Component Development
+- Use Radix UI primitives for accessible components
+- Follow the existing component patterns in `src/components/ui/`
+- Implement proper loading states and error handling
+- Use Tailwind CSS for styling
+- Make components responsive by default
+
+### API Development
+- Use tRPC for type-safe API endpoints
+- Implement proper error handling in all procedures
+- Use Supabase client for database operations
+- Follow REST principles for external API integrations
+
+### Environment Variables
+- Always use `.env.example` as template
+- Never commit `.env.local` to version control
+- Document all environment variables in README.md
+- Use proper TypeScript typing for env variables
+
+## File Naming Conventions
+- Components: PascalCase (e.g., `DashboardSidebar.tsx`)
+- Pages: kebab-case (e.g., `admin/twitter/index.tsx`)
+- Utilities: camelCase (e.g., `utils/api.ts`)
+- Types: PascalCase (e.g., `types/Database.ts`)
+
+## Common Tasks
+
+### Adding a New Database Table
+1. Create migration: `supabase migration new add_table_name`
+2. Write SQL in the migration file
+3. Apply migration: `supabase db push`
+4. Regenerate types: `npx supabase gen types typescript --local > ../shared-types/database.types.ts`
+5. Create tRPC procedures for the new table
+6. Update UI components as needed
+
+### Adding New Admin Features
+1. Check admin permissions in tRPC procedures
+2. Add navigation items to `src/config/app.ts`
+3. Create page components in `src/pages/admin/`
+4. Implement proper error handling and loading states
+5. Test with both admin and non-admin users
+
+### Styling Guidelines
+- Use Tailwind CSS utility classes
+- Follow responsive design patterns (mobile-first)
+- Use consistent spacing and typography
+- Implement dark mode support where applicable
+- Use Radix UI for interactive components
+
+## Best Practices
+- Always use TypeScript strict mode
+- Implement proper error boundaries
+- Use React Query for data fetching (via tRPC)
+- Follow accessibility guidelines
+- Write meaningful commit messages
+- Test critical user flows manually
+- Keep components small and focused
+- Use proper TypeScript types, avoid `any`
+- Implement proper loading and error states
+- Follow the existing code patterns and conventions
+
+## Development Workflow
+1. Start with database schema changes if needed
+2. Generate types after schema changes
+3. Update tRPC procedures
+4. Implement UI components
+5. Test functionality thoroughly
+6. Update documentation as needed
+
+Remember: This is an admin dashboard template, so prioritize security, type safety, and maintainability over rapid development.
