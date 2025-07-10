@@ -1,0 +1,130 @@
+---
+alwaysApply: true
+description: "Git best practices and workflow guidelines for the admin dashboard template project"
+---
+
+# Git Best Practices
+
+## Commit Message Guidelines
+
+### Format
+Use the conventional commit format:
+```
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Types
+- `feat`: A new feature
+- `fix`: A bug fix
+- `docs`: Documentation only changes
+- `style`: Changes that do not affect the meaning of the code (white-space, formatting, etc)
+- `refactor`: A code change that neither fixes a bug nor adds a feature
+- `perf`: A code change that improves performance
+- `test`: Adding missing tests or correcting existing tests
+- `chore`: Changes to the build process or auxiliary tools and libraries
+- `ci`: Changes to CI configuration files and scripts
+- `revert`: Reverts a previous commit
+
+### Examples
+```
+feat(auth): add admin email verification
+fix(database): resolve connection timeout issues
+docs(readme): update installation instructions
+refactor(components): extract common UI patterns
+chore(deps): update Next.js to version 15
+```
+
+## Branch Naming Conventions
+
+### Pattern
+Use kebab-case with descriptive names:
+```
+<type>/<description>
+<type>/<ticket-number>-<description>
+```
+
+### Examples
+- `feature/user-authentication`
+- `fix/database-connection-timeout`
+- `hotfix/security-vulnerability`
+- `docs/api-documentation-update`
+- `refactor/component-structure`
+
+## File Management
+
+### Never Commit
+- Environment files (`.env.local`, `.env.production`)
+- IDE-specific files (`.vscode/settings.json` unless shared)
+- OS-specific files (`.DS_Store`, `Thumbs.db`)
+- Build artifacts (`dist/`, `.next/`, `node_modules/`)
+- Temporary files (`*.tmp`, `*.log`)
+- Database dumps or backups
+- API keys or secrets
+
+## Atomic Commits
+
+### Guidelines
+- Make small, focused commits that represent a single logical change
+- Each commit should be buildable and testable
+- Avoid mixing unrelated changes in a single commit
+- Use `git add -p` to stage specific hunks when needed
+
+### Examples of Good Atomic Commits
+```bash
+git commit -m "feat(auth): add email validation to sign-up form"
+git commit -m "fix(ui): resolve button styling inconsistency"
+git commit -m "docs(api): add tRPC endpoint documentation"
+```
+
+## Database Migration Workflow
+
+### Always Follow This Sequence
+1. Create migration file in [supabase/migrations/](mdc:supabase/migrations/)
+2. Apply migration locally: `supabase db push`
+3. Regenerate types: `npx supabase gen types typescript --local > ../shared-types/database.types.ts`
+4. Commit both migration and updated types together:
+   ```bash
+   git add supabase/migrations/[timestamp]_[migration_name].sql
+   git add shared-types/database.types.ts
+   git commit -m "feat(db): add users table with RLS policies"
+   ```
+
+## Reverting Changes
+
+### Safe Revert Commands
+```bash
+# Revert last commit (creates new commit)
+git revert HEAD
+
+# Revert specific commit
+git revert <commit-hash>
+
+# Revert multiple commits
+git revert <oldest-commit>..<newest-commit>
+```
+
+## Large File Handling
+
+### Avoid Committing Large Files
+- Images should be optimized and under 1MB when possible
+- Use external storage (Supabase Storage) for user uploads
+- Consider Git LFS for legitimate large assets
+- Remove large files from history if accidentally committed
+
+## Collaboration Guidelines
+
+### Before Pushing
+```bash
+# Always pull latest changes
+git pull origin main
+
+# Rebase feature branch if needed
+git rebase main
+
+# Push with force-with-lease for safety
+git push --force-with-lease origin feature-branch
+```
