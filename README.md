@@ -45,9 +45,6 @@ cp .env.example .env.local
 Then edit `.env.local` with your actual values:
 
 ```env
-# OpenAPI (Optional)
-OPENAI_API_KEY=your_openai_api_key
-
 # RapidAPI (Twitter monitoring)
 RAPID_API_KEY=your_rapidapi_key_here
 
