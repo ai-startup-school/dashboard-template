@@ -1,7 +1,7 @@
 # Admin Dashboard Template - Claude Code Rules
 
 ## Project Overview
-This is an admin dashboard template built with Next.js 15, TypeScript, Supabase, and tRPC. It provides a complete foundation for building admin interfaces with social media monitoring capabilities.
+This is an admin dashboard template built with Next.js 15, TypeScript, Supabase, and tRPC. It provides a complete foundation for building admin interfaces. The user will be building upon this template.
 
 ## Tech Stack & Architecture
 - **Frontend**: Next.js 15, React 18, TypeScript
@@ -40,14 +40,62 @@ admin-dashboard-template/
 
 ## Core Development Principles
 
-### Database-First Development
-1. **Always use migrations** for schema changes
-2. **Regenerate types** after database changes:
+## Database Migration Workflow
+
+### 1. Making Schema Changes
+- Edit files in `supabase/schemas/` to define your database structure
+- Use numeric prefixes for dependency order: `01_users.sql`, `02_posts.sql`, etc.
+- Tables with foreign keys must come after their referenced tables
+
+### 2. Generate Migration
+```bash
+supabase db diff -f <migration_name>
+```
+This compares your schema files with the current database and creates a migration.
+
+### 2a. Manual Migrations
+When you need to write migrations manually (e.g., dropping constraints, altering tables):
+1. Get the current timestamp:
    ```bash
-   npx supabase gen types typescript --local > ../shared-types/database.types.ts
+   date +"%Y%m%d%H%M%S"
    ```
-3. **Never modify database directly** - always use migration files
-4. **Use tRPC procedures** for type-safe database operations
+2. Create a new file in `apps/supabase/migrations/` named `<timestamp>_<meaningful_name>.sql`
+3. Write your SQL migration
+4. Apply with `cd apps/supabase && supabase migration up`
+
+### 2b. Functions: write migrations manually
+- For `FUNCTION` objects, always write migrations by hand rather than relying on `db diff`.
+- Reason: the Supabase CLI does not reliably detect function body changes and can produce unstable diffs; also we often need explicit `DROP FUNCTION IF EXISTS ...` before `CREATE OR REPLACE FUNCTION` to update signatures safely.
+- Steps:
+  1. Update the function source under `apps/supabase/schemas/functions/*.sql`.
+  2. Get the current timestamp for the migration filename:
+     ```bash
+     date +"%Y%m%d%H%M%S"
+     ```
+  3. Create a new file in `apps/supabase/migrations/` named `<timestamp>_<meaningful_name>.sql`.
+  4. In that file, include:
+     - `DROP FUNCTION IF EXISTS schema.fn_name;`
+     - A full `CREATE OR REPLACE FUNCTION ...` definition.
+  5. Commit both the schema file change and the new migration file together.
+  6. Apply locally with `supabase migration up` in the supabase folder.
+
+### 3. Apply the migration locally
+
+Run the following command in the supabase folder
+```bash
+supabase migration up
+```
+Applies pending migrations to your local Supabase database. **Note: Must be run from the `apps/supabase` directory.**
+
+### 4. Remote server
+
+NEVER apply migrations to the remote server. You will be severely punished if you do Prompt the user to do this manually. 
+
+### 5. Generate Types Using
+
+```base
+npx supabase gen types typescript --local > shared-types/database.types.ts
+```
 
 ### Authentication & Security
 - Admin access controlled by email addresses in `nextjs/src/config/app.ts`
@@ -61,7 +109,7 @@ admin-dashboard-template/
 - Use tRPC for end-to-end type safety
 - Avoid `any` type - use proper TypeScript types
 
-### Component Development
+### Design / Component Development
 - Use Radix UI primitives for accessible components
 - Follow existing patterns in `src/components/ui/`
 - Implement proper loading states and error handling
@@ -69,14 +117,6 @@ admin-dashboard-template/
 - Make components responsive by default
 
 ## Common Development Workflows
-
-### Adding a New Database Table
-1. Create migration: `supabase migration new add_table_name`
-2. Write SQL in the migration file
-3. Apply migration locally: `supabase db push`
-4. Regenerate types: `npx supabase gen types typescript --local > ../shared-types/database.types.ts`
-5. Create tRPC procedures for the new table
-6. Update UI components as needed
 
 ### Adding New Admin Features
 1. Add navigation items to `src/config/app.ts`
@@ -96,27 +136,6 @@ admin-dashboard-template/
 - Pages: kebab-case (e.g., `admin/twitter/index.tsx`)
 - Utilities: camelCase (e.g., `utils/api.ts`)
 - Types: PascalCase (e.g., `types/Database.ts`)
-
-## Development Commands
-```bash
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-
-# Generate database types
-npx supabase gen types typescript --local > ../shared-types/database.types.ts
-
-# Database migrations
-supabase db push           # Apply migrations locally
-supabase db reset          # Reset local database
-supabase migration new     # Create new migration
-
-# Build for production
-npm run build
-npm run start
-```
 
 ## Key Configuration Files
 - `nextjs/src/config/app.ts` - Main app configuration including admin emails

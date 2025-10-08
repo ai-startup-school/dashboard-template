@@ -145,5 +145,6 @@ backend = "postgres"
 schema_paths = [
   "./schemas/enums/*.sql",
   "./schemas/tables/*.sql",
-  "./schemas/storage/*.sql"
+  "./schemas/storage/*.sql",
+  "./schemas/*.sql"
 ]
