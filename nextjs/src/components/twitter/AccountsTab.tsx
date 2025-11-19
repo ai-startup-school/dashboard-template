@@ -37,10 +37,10 @@ export const AccountsTab = () => {
     data: accounts,
     isLoading: isLoadingAccounts,
     refetch,
-  } = api.admin.twitter.list.useQuery();
+  } = api.dashboard.twitter.list.useQuery();
 
   // Mutations
-  const addAccount = api.admin.twitter.addAccount.useMutation({
+  const addAccount = api.dashboard.twitter.addAccount.useMutation({
     onSuccess: () => {
       toast({
         title: "Success",
@@ -58,7 +58,7 @@ export const AccountsTab = () => {
     },
   });
 
-  const deleteAccount = api.admin.twitter.delete.useMutation({
+  const deleteAccount = api.dashboard.twitter.delete.useMutation({
     onSuccess: () => {
       toast({
         title: "Success",

@@ -19,10 +19,10 @@ export const PostsTab = () => {
 
   // Queries
   const { data: accounts, isLoading: isLoadingAccounts } =
-    api.admin.twitter.list.useQuery();
+    api.dashboard.twitter.list.useQuery();
 
   const { data: tweets, isLoading: isLoadingTweets } =
-    api.admin.twitter.listPosts.useQuery({
+    api.dashboard.twitter.listPosts.useQuery({
       limit: postLimit,
       account_id: selectedAccountId === "all" ? undefined : Number(selectedAccountId),
     });

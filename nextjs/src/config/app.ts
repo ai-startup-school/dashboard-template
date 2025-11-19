@@ -29,18 +29,18 @@ export const appConfig = {
 
   // Dashboard configuration
   dashboard: {
-    defaultRoute: "/admin/twitter",
+    defaultRoute: "/dashboard/twitter",
     showSettings: true,
     navigation: [
       {
         title: "Twitter Monitoring",
         subItems: [
-          { title: "Dashboard", url: "/admin/twitter" },
+          { title: "Dashboard", url: "/dashboard/twitter" },
         ],
       },
       {
         title: "Settings",
-        url: "/admin/settings",
+        url: "/dashboard/settings",
       },
     ],
   },

@@ -214,7 +214,7 @@ The app includes a configuration file at `src/config/app.ts` where you can:
 
 1. Add platform configuration to `src/config/app.ts`
 2. Create new database tables for the platform
-3. Add API routes in `src/server/api/routers/admin/`
+3. Add API routes in `src/server/api/routers/dashboard/`
 4. Create UI components in `src/components/[platform]/`
 5. Update the dashboard sidebar navigation
 

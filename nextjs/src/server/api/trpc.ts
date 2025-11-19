@@ -69,7 +69,6 @@ const isAuthed = t.middleware(({ next, ctx }) => {
   return next({
     ctx: {
       user: ctx.user,
-      supabase: ctx.supabase,
     },
   });
 });
@@ -97,7 +96,6 @@ const isAdmin = t.middleware(({ next, ctx }) => {
   return next({
     ctx: {
       user: ctx.user,
-      supabase: ctx.supabase,
     },
   });
 });

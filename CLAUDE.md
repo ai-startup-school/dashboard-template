@@ -24,7 +24,7 @@ admin-dashboard-template/
 │   │   ├── config/           # App configuration
 │   │   │   └── app.ts        # Main app config (includes admin emails)
 │   │   ├── pages/            # Next.js pages
-│   │   │   ├── admin/        # Admin-only pages
+│   │   │   ├── dashboard/        # Admin-only pages
 │   │   │   └── api/          # API routes
 │   │   ├── server/           # tRPC server and routers
 │   │   │   └── api/          # tRPC API definitions
@@ -121,7 +121,7 @@ npx supabase gen types typescript --local > shared-types/database.types.ts
 
 ### Adding New Admin Features
 1. Add navigation items to `src/config/app.ts`
-2. Create page components in `src/pages/admin/`
+2. Create page components in `src/pages/dashboard/`
 3. Implement tRPC procedures with admin permission checks
 4. Add UI components with proper error handling
 5. Test with both admin and non-admin users
@@ -134,7 +134,7 @@ npx supabase gen types typescript --local > shared-types/database.types.ts
 
 ## File Naming Conventions
 - Components: PascalCase (e.g., `DashboardSidebar.tsx`)
-- Pages: kebab-case (e.g., `admin/twitter/index.tsx`)
+- Pages: kebab-case (e.g., `dashboard/twitter/index.tsx`)
 - Utilities: camelCase (e.g., `utils/api.ts`)
 - Types: PascalCase (e.g., `types/Database.ts`)
 

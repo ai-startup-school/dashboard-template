@@ -99,5 +99,5 @@ Disallow: /
 User-agent: *
 
 # Block admin and API routes
-Disallow: /admin
+Disallow: /dashboard
 Disallow: /api

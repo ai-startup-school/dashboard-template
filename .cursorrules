@@ -83,7 +83,7 @@ admin-dashboard-template/
 
 ## File Naming Conventions
 - Components: PascalCase (e.g., `DashboardSidebar.tsx`)
-- Pages: kebab-case (e.g., `admin/twitter/index.tsx`)
+- Pages: kebab-case (e.g., `dashboard/twitter/index.tsx`)
 - Utilities: camelCase (e.g., `utils/api.ts`)
 - Types: PascalCase (e.g., `types/Database.ts`)
 
@@ -100,7 +100,7 @@ admin-dashboard-template/
 ### Adding New Admin Features
 1. Check admin permissions in tRPC procedures
 2. Add navigation items to `src/config/app.ts`
-3. Create page components in `src/pages/admin/`
+3. Create page components in `src/pages/dashboard/`
 4. Implement proper error handling and loading states
 5. Test with both admin and non-admin users
 
