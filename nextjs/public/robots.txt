@@ -98,6 +98,6 @@ Disallow: /
 #
 User-agent: *
 
-# Block admin and API routes
+# Block dashboard and API routes
 Disallow: /dashboard
 Disallow: /api

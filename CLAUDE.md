@@ -1,7 +1,7 @@
-# Admin Dashboard Template - Claude Code Rules
+# Dashboard Template - Claude Code Rules
 
 ## Project Overview
-This is an admin dashboard template built with Next.js 15, TypeScript, Supabase, and tRPC. It provides a complete foundation for building admin interfaces. The user will be building upon this template.
+This is an dashboard template built with Next.js 15, TypeScript, Supabase, and tRPC. It provides a complete foundation for building interfaces. The user will be building upon this template.
 
 ## Tech Stack & Architecture
 - **Frontend**: Next.js 15, React 18, TypeScript
@@ -14,7 +14,7 @@ This is an admin dashboard template built with Next.js 15, TypeScript, Supabase,
 
 ## Project Structure
 ```
-admin-dashboard-template/
+dashboard-template/
 ├── nextjs/                    # Main Next.js application
 │   ├── src/
 │   │   ├── components/        # React components
@@ -127,9 +127,9 @@ npx supabase gen types typescript --local > shared-types/database.types.ts
 5. Test with authenticated users
 
 ### Environment Setup
-- Use `.env.example` as template for environment variables
+- Use `.env.example` as template for environment variables. When a new package is installed, add it to that.
 - Never commit `.env.local` to version control
-- Ensure all required environment variables are set
+- Ensure all required environment variables are set in the `nextjs/src/env/schema.mjs` file. This sohuld stay in sync with the `.env.example` file.
 
 ## File Naming Conventions
 - Components: PascalCase (e.g., `DashboardSidebar.tsx`)

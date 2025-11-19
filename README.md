@@ -1,16 +1,14 @@
-# Admin Dashboard Template
+# Dashboard Template
 
-A production-ready Next.js admin dashboard template for monitoring social media accounts and posts. Built with TypeScript, tRPC, Supabase, and Tailwind CSS with complete authentication and role-based access control.
+A production-ready Next.js dashboard template for monitoring social media accounts and posts. Built with TypeScript, tRPC, Supabase, and Tailwind CSS with complete authentication and role-based access control.
 
 ## 🚀 Features
 
-- **Admin Dashboard**: Complete admin interface with role-based access control
 - **Twitter Monitoring**: Track multiple Twitter accounts and their posts
 - **Real-time Dashboard**: View accounts and posts in a clean, responsive interface
 - **Database Integration**: Powered by Supabase for reliable data storage
 - **Background Jobs**: Uses Inngest for scheduled tasks and data processing
 - **Authentication**: Built-in user authentication with Supabase Auth
-- **Admin Controls**: Secure admin-only sections with email-based authorization
 - **Type Safety**: Full TypeScript support with tRPC for end-to-end type safety
 - **Modern UI**: Beautiful, responsive interface built with Tailwind CSS and Radix UI
 
@@ -29,7 +27,7 @@ Before setting up the project, ensure you have:
 
 ```bash
 git clone <your-repo-url>
-cd admin-dashboard-template
+cd dashboard-template
 cd nextjs
 npm install
 ```
@@ -163,7 +161,7 @@ npm run build
 npm run start
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) and you'll be redirected to the admin dashboard.
+Visit [http://localhost:3000](http://localhost:3000) and you'll be redirected to the dashboard.
 
 ## 🎯 Usage
 
