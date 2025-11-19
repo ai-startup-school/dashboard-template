@@ -156,5 +156,6 @@ npx supabase gen types typescript --local > shared-types/database.types.ts
 4. Follow the existing code patterns and conventions
 5. Test authentication thoroughly
 6. Update documentation when adding new features
+7. Commit changes regularly unless the user tells you otherwise
 
 Remember: This is a production-ready template focused on security, type safety, and maintainability.
