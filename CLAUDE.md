@@ -8,7 +8,7 @@ This is an admin dashboard template built with Next.js 15, TypeScript, Supabase,
 - **Styling**: Tailwind CSS, Radix UI components
 - **Backend**: tRPC for type-safe APIs, Next.js API routes
 - **Database**: Supabase (PostgreSQL) with Row Level Security
-- **Authentication**: Supabase Auth with email-based admin controls
+- **Authentication**: Supabase Auth
 - **Background Jobs**: Inngest for scheduled tasks
 - **Type Safety**: Full TypeScript with end-to-end type safety
 
@@ -22,9 +22,9 @@ admin-dashboard-template/
 │   │   │   ├── layout/       # Layout components
 │   │   │   └── [feature]/    # Feature-specific components
 │   │   ├── config/           # App configuration
-│   │   │   └── app.ts        # Main app config (includes admin emails)
+│   │   │   └── app.ts        # Main app config
 │   │   ├── pages/            # Next.js pages
-│   │   │   ├── dashboard/        # Admin-only pages
+│   │   │   ├── dashboard/        # Dashboard pages
 │   │   │   └── api/          # API routes
 │   │   ├── server/           # tRPC server and routers
 │   │   │   └── api/          # tRPC API definitions
@@ -98,9 +98,9 @@ npx supabase gen types typescript --local > shared-types/database.types.ts
 ```
 
 ### Authentication & Security
-- Admin access controlled by email addresses in `nextjs/src/config/app.ts`
-- Always verify admin permissions in tRPC procedures
-- Use Supabase RLS policies for additional security
+- Authentication via Supabase Auth
+- Use `protectedProcedure` in tRPC for authenticated endpoints
+- Use Supabase RLS policies for database security
 - Never expose sensitive data in client-side code
 
 ### Type Safety
@@ -119,17 +119,16 @@ npx supabase gen types typescript --local > shared-types/database.types.ts
 
 ## Common Development Workflows
 
-### Adding New Admin Features
+### Adding New Features
 1. Add navigation items to `src/config/app.ts`
 2. Create page components in `src/pages/dashboard/`
-3. Implement tRPC procedures with admin permission checks
+3. Implement tRPC procedures with `protectedProcedure` for authentication
 4. Add UI components with proper error handling
-5. Test with both admin and non-admin users
+5. Test with authenticated users
 
 ### Environment Setup
 - Use `.env.example` as template for environment variables
 - Never commit `.env.local` to version control
-- Update admin emails in `nextjs/src/config/app.ts`
 - Ensure all required environment variables are set
 
 ## File Naming Conventions
@@ -139,13 +138,13 @@ npx supabase gen types typescript --local > shared-types/database.types.ts
 - Types: PascalCase (e.g., `types/Database.ts`)
 
 ## Key Configuration Files
-- `nextjs/src/config/app.ts` - Main app configuration including admin emails
+- `nextjs/src/config/app.ts` - Main app configuration
 - `nextjs/.env.example` - Environment variables template
 - `supabase/config.toml` - Supabase configuration
 - `tailwind.config.ts` - Tailwind CSS configuration
 
 ## Security Considerations
-- Admin access is email-based - update `adminEmails` array in config
+- Use Supabase Auth for authentication
 - Use Supabase RLS policies for database security
 - Validate all user inputs and API requests
 - Keep environment variables secure and documented
@@ -155,7 +154,7 @@ npx supabase gen types typescript --local > shared-types/database.types.ts
 2. Use migrations for any database changes
 3. Regenerate types after schema changes
 4. Follow the existing code patterns and conventions
-5. Test admin permissions thoroughly
+5. Test authentication thoroughly
 6. Update documentation when adding new features
 
 Remember: This is a production-ready template focused on security, type safety, and maintainability.

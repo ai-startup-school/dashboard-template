@@ -2,12 +2,12 @@ import { supabaseServer } from "@/lib/clients/supabase";
 import { TRPCError } from "@trpc/server";
 import axios from "axios";
 import { z } from "zod";
-import { adminProcedure, createTRPCRouter } from "../../trpc";
+import { protectedProcedure, createTRPCRouter } from "../../trpc";
 
-// Admin router for Twitter account management
+// Router for Twitter account management
 export const twitterRouter = createTRPCRouter({
   // 1. List all accounts
-  list: adminProcedure.query(async () => {
+  list: protectedProcedure.query(async () => {
     const { data: accounts, error } = await supabaseServer
       .from("twitter_accounts")
       .select("*")
@@ -18,7 +18,7 @@ export const twitterRouter = createTRPCRouter({
   }),
 
   // 2. Add account by username (via RapidAPI Twttr API)
-  addAccount: adminProcedure
+  addAccount: protectedProcedure
     .input(z.object({ username: z.string().min(1) }))
     .mutation(async ({ input }) => {
       const username = input.username.replace(/^@/, "");
@@ -85,7 +85,7 @@ export const twitterRouter = createTRPCRouter({
     }),
 
   // 3. Delete account
-  delete: adminProcedure
+  delete: protectedProcedure
     .input(z.object({ id: z.number() }))
     .mutation(async ({ input }) => {
       const { error } = await supabaseServer
@@ -98,7 +98,7 @@ export const twitterRouter = createTRPCRouter({
     }),
 
   // 4. List tweets (posts)
-  listPosts: adminProcedure
+  listPosts: protectedProcedure
     .input(
       z.object({
         limit: z.number().min(1).max(1000).default(100),
