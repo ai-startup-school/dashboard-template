@@ -60,28 +60,8 @@ INNGEST_SIGNING_KEY=your_inngest_signing_key
 
 **Never commit your `.env.local` file to version control!** Use the provided `.env.example` as a template.
 
-### 3. Admin Configuration
 
-🔐 **Critical**: Update the admin email addresses in the configuration file:
-
-1. Open `nextjs/src/config/app.ts`
-2. Update the `adminEmails` array with your email addresses:
-
-```typescript
-// Authentication settings
-auth: {
-  enableSignUp: true,
-  enablePasswordReset: true,
-  adminEmails: [
-    "your-email@yourdomain.com", // Replace with your actual email
-    "admin@yourdomain.com",      // Add additional admin emails as needed
-  ] as readonly string[],
-},
-```
-
-⚠️ **Important**: Only users with emails in this array can access admin features. Make sure to add your email before deploying!
-
-### 4. Database Setup
+### 3. Database Setup
 
 #### Create Supabase Tables
 
