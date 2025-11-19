@@ -105,7 +105,8 @@ npx supabase gen types typescript --local > shared-types/database.types.ts
 
 ### Type Safety
 - Use TypeScript for all code
-- Import database types from `shared-types/database.types.ts`
+- Import database types using the path alias: `import { Database } from "@shared-types/database.types"`
+  - The `@shared-types/*` alias is configured in `nextjs/tsconfig.json` and maps to `../shared-types/*`
 - Use tRPC for end-to-end type safety
 - Avoid `any` type - use proper TypeScript types
 
