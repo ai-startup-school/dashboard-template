@@ -4,11 +4,11 @@
 This is an dashboard template built with Next.js 15, TypeScript, Supabase, and tRPC. It provides a complete foundation for building interfaces. The user will be building upon this template.
 
 ## Tech Stack & Architecture
-- **Frontend**: Next.js 15, React 18, TypeScript
+- **Frontend**: Next.js 15 (Pages Router), React 18, TypeScript
 - **Styling**: Tailwind CSS, Radix UI components
 - **Backend**: tRPC for type-safe APIs, Next.js API routes
 - **Database**: Supabase (PostgreSQL) with Row Level Security
-- **Authentication**: Supabase Auth
+- **Authentication**: Supabase Auth with Zustand state management
 - **Background Jobs**: Inngest for scheduled tasks
 - **Type Safety**: Full TypeScript with end-to-end type safety
 
@@ -17,18 +17,31 @@ This is an dashboard template built with Next.js 15, TypeScript, Supabase, and t
 dashboard-template/
 ├── nextjs/                    # Main Next.js application
 │   ├── src/
+│   │   ├── app/
+│   │   │   └── api/trpc/[trpc]/route.ts  # tRPC API endpoint (App Router)
 │   │   ├── components/        # React components
 │   │   │   ├── ui/           # Reusable UI components (Radix UI)
 │   │   │   ├── layout/       # Layout components
 │   │   │   └── [feature]/    # Feature-specific components
 │   │   ├── config/           # App configuration
 │   │   │   └── app.ts        # Main app config
-│   │   ├── pages/            # Next.js pages
-│   │   │   ├── dashboard/        # Dashboard pages
-│   │   │   └── api/          # API routes
-│   │   ├── server/           # tRPC server and routers
-│   │   │   └── api/          # tRPC API definitions
+│   │   ├── hooks/            # React hooks
+│   │   │   └── useUser.tsx   # Auth hook using Zustand
+│   │   ├── lib/clients/      # External service clients
+│   │   │   └── supabase.ts   # supabaseServer (service role)
+│   │   ├── pages/            # Next.js pages (Pages Router)
+│   │   │   ├── _app.tsx      # App wrapper with tRPC
+│   │   │   ├── dashboard/    # Dashboard pages
+│   │   │   └── api/          # API routes (non-tRPC)
+│   │   ├── server/           # tRPC server
+│   │   │   ├── trpc/         # tRPC initialization
+│   │   │   │   ├── init.ts   # Procedures (public, protected)
+│   │   │   │   └── context.ts # Supabase context
+│   │   │   └── api/routers/  # tRPC routers
+│   │   ├── stores/           # Zustand stores
+│   │   │   └── use-auth-store.ts  # Auth state management
 │   │   └── utils/            # Utility functions
+│   │       └── supabase/     # Supabase client utilities
 │   ├── .env.example          # Environment variables template
 │   └── package.json
 ├── shared-types/             # Shared TypeScript types
@@ -37,6 +50,13 @@ dashboard-template/
     ├── migrations/          # Database migration files
     └── config.toml         # Supabase configuration
 ```
+
+## Routing Architecture
+This project uses a **hybrid routing** approach:
+- **Pages Router** (`pages/`) - All UI pages use the Pages Router
+- **App Router** (`app/api/`) - Only the tRPC API endpoint uses App Router
+
+The tRPC provider is wrapped in `pages/_app.tsx` using `api.withTRPC(App)`.
 
 ## Core Development Principles
 
@@ -98,9 +118,21 @@ npx supabase gen types typescript --local > shared-types/database.types.ts
 ```
 
 ### Authentication & Security
-- Authentication via Supabase Auth
+- Authentication via Supabase Auth with Zustand state management
 - Use `protectedProcedure` in tRPC for authenticated endpoints
-- Use Supabase RLS policies for database security
+- In tRPC procedures, use `supabaseServer` (service role client) with `ctx.user.id` filtering:
+  ```typescript
+  import { supabaseServer } from "@/lib/clients/supabase";
+
+  list: protectedProcedure.query(async ({ ctx }) => {
+    const { data } = await supabaseServer
+      .from('table')
+      .select('*')
+      .eq('user_id', ctx.user.id);
+    return data;
+  }),
+  ```
+- Use Supabase RLS policies for additional database security
 - Never expose sensitive data in client-side code
 
 ### Type Safety
@@ -133,12 +165,17 @@ npx supabase gen types typescript --local > shared-types/database.types.ts
 
 ## File Naming Conventions
 - Components: PascalCase (e.g., `DashboardSidebar.tsx`)
-- Pages: kebab-case (e.g., `dashboard/twitter/index.tsx`)
+- Pages: kebab-case (e.g., `dashboard/twitter.tsx`)
 - Utilities: camelCase (e.g., `utils/api.ts`)
 - Types: PascalCase (e.g., `types/Database.ts`)
+- Stores: kebab-case with `use-` prefix (e.g., `use-auth-store.ts`)
 
 ## Key Configuration Files
 - `nextjs/src/config/app.ts` - Main app configuration
+- `nextjs/src/pages/_app.tsx` - App wrapper with tRPC provider
+- `nextjs/src/server/trpc/init.ts` - tRPC procedures (public, protected)
+- `nextjs/src/server/trpc/context.ts` - tRPC context with Supabase
+- `nextjs/src/stores/use-auth-store.ts` - Zustand auth state
 - `nextjs/.env.example` - Environment variables template
 - `supabase/config.toml` - Supabase configuration
 - `tailwind.config.ts` - Tailwind CSS configuration
