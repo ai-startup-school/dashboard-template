@@ -13,7 +13,7 @@ export const serverSchema = z.object({
   RAPID_API_KEY: z.string(),
 
   // Supabase
-  SUPABASE_SERVICE_ROLE_KEY: z.string(),
+  SUPABASE_SECRET_KEY: z.string(),
 
   // Inngest (only required in production)
   INNGEST_EVENT_KEY: z.string().optional(),
@@ -33,7 +33,7 @@ export const serverEnv = {
   RAPID_API_KEY: process.env.RAPID_API_KEY,
 
   // Supabase
-  SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
+  SUPABASE_SECRET_KEY: process.env.SUPABASE_SECRET_KEY,
 
   // Inngest
   INNGEST_EVENT_KEY: process.env.INNGEST_EVENT_KEY,
@@ -48,7 +48,7 @@ export const serverEnv = {
 export const clientSchema = z.object({
   // Supabase
   NEXT_PUBLIC_SUPABASE_URL: z.string(),
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: z.string(),
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: z.string(),
 });
 
 /**
@@ -60,5 +60,5 @@ export const clientSchema = z.object({
 export const clientEnv = {
   // Supabase
   NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
 };

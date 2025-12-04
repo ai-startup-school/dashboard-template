@@ -47,9 +47,9 @@ Then edit `.env.local` with your actual values:
 RAPID_API_KEY=your_rapidapi_key_here
 
 # Supabase
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+SUPABASE_SECRET_KEY=your_supabase_service_role_key
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_key
 
 # Inngest (Background jobs - required in production)
 INNGEST_EVENT_KEY=your_inngest_event_key
