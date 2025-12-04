@@ -18,35 +18,13 @@ export default function Page() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showResetForm, setShowResetForm] = useState(false);
 
-  // Check if password reset is enabled
-  if (!appConfig.auth.enablePasswordReset) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
-        <div className="w-full max-w-md space-y-8 rounded-lg bg-white p-6 shadow-md">
-          <div className="flex flex-col items-center space-y-6">
-            <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-              Password Reset Disabled
-            </h2>
-            <p className="text-center text-gray-600">
-              Password reset is currently disabled. Please contact an administrator.
-            </p>
-            <button
-              onClick={() => router.push("/sign-in")}
-              className="group relative flex w-full justify-center rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
-            >
-              Go to Sign In
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   // Listen for PASSWORD_RECOVERY event
   useEffect(() => {
+    if (!appConfig.auth.enablePasswordReset) return;
+
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
+    } = supabase.auth.onAuthStateChange(async (event) => {
       if (event === "PASSWORD_RECOVERY") {
         // Show the password reset form when PASSWORD_RECOVERY event is detected
         setShowResetForm(true);
@@ -65,6 +43,8 @@ export default function Page() {
 
   // Check if user is authenticated via the reset password flow
   useEffect(() => {
+    if (!appConfig.auth.enablePasswordReset) return;
+
     const checkResetPasswordFlow = async () => {
       // If we have a hash in the URL, it means the user clicked on a reset password link
       const hash = window.location.hash;
@@ -144,6 +124,31 @@ export default function Page() {
     } finally {
       setIsSubmitting(false);
     }
+  }
+
+  // Check if password reset is enabled - render disabled UI
+  if (!appConfig.auth.enablePasswordReset) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50">
+        <div className="w-full max-w-md space-y-8 rounded-lg bg-white p-6 shadow-md">
+          <div className="flex flex-col items-center space-y-6">
+            <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+              Password Reset Disabled
+            </h2>
+            <p className="text-center text-gray-600">
+              Password reset is currently disabled. Please contact an
+              administrator.
+            </p>
+            <button
+              onClick={() => router.push("/sign-in")}
+              className="group relative flex w-full justify-center rounded-md bg-emerald-600 px-3 py-2 text-sm font-semibold text-white hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600"
+            >
+              Go to Sign In
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

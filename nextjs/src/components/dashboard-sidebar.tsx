@@ -21,7 +21,6 @@ import { appConfig } from "@/config/app";
 import { useUser } from "@/hooks/useUser";
 import { ChevronUp } from "lucide-react";
 import { useRouter } from "next/router";
-import type { SimpleIcon } from "simple-icons";
 import {
   DropdownMenu,
   DropdownMenuContent,

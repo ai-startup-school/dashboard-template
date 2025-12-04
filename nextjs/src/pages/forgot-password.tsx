@@ -23,7 +23,8 @@ export default function Page() {
               Password Reset Disabled
             </h2>
             <p className="text-center text-gray-600">
-              Password reset is currently disabled. Please contact an administrator.
+              Password reset is currently disabled. Please contact an
+              administrator.
             </p>
             <Link
               href="/sign-in"

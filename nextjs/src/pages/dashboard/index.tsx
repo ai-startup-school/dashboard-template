@@ -1,14 +1,12 @@
-import { GetServerSideProps } from "next";
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  return {
-    redirect: {
-      destination: "/dashboard/twitter/",
-      permanent: false,
-    },
-  };
-};
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export default function Dashboard() {
-  return <div>Dashboard</div>;
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/dashboard/twitter");
+  }, [router]);
+
+  return null;
 }

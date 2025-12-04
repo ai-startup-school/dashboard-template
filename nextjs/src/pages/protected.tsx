@@ -1,6 +1,4 @@
-import { type NextPage } from "next";
-
-const Protected: NextPage = () => {
+export default function Protected() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
       <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
@@ -12,6 +10,4 @@ const Protected: NextPage = () => {
       </div>
     </main>
   );
-};
-
-export default Protected;
+}

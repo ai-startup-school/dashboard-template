@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/component";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { appConfig } from "@/config/app";
+import Link from "next/link";
 
 export default function Page() {
   const router = useRouter();
@@ -18,7 +19,7 @@ export default function Page() {
   // If user is already signed in, show message and redirect
   useEffect(() => {
     if (user && !userLoading) {
-      const returnTo = router.query.returnTo as string;
+      const returnTo = router.query.returnTo as string | undefined;
       if (returnTo) {
         router.push(decodeURIComponent(returnTo));
       } else {
@@ -40,7 +41,8 @@ export default function Page() {
               Sign Up Disabled
             </h2>
             <p className="text-center text-gray-600">
-              Account creation is currently disabled. Please contact an administrator.
+              Account creation is currently disabled. Please contact an
+              administrator.
             </p>
             <button
               onClick={() => router.push("/sign-in")}
@@ -147,12 +149,12 @@ export default function Page() {
                 </button>
               </div>
               <div className="text-center">
-                <a
+                <Link
                   href="/sign-in"
                   className="text-sm text-emerald-600 hover:text-emerald-500"
                 >
                   Already have an account? Sign in
-                </a>
+                </Link>
               </div>
             </form>
           </>

@@ -2,7 +2,10 @@ import { supabaseServer } from "@/lib/clients/supabase";
 import { TRPCError } from "@trpc/server";
 import axios from "axios";
 import { z } from "zod";
-import { protectedProcedure, createTRPCRouter } from "../../trpc";
+import { protectedProcedure, router } from "@/server/trpc/init";
+
+// Alias for backward compatibility
+const createTRPCRouter = router;
 
 // Router for Twitter account management
 export const twitterRouter = createTRPCRouter({
