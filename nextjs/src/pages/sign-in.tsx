@@ -49,7 +49,7 @@ export default function Page() {
   useEffect(() => {
     if (user && !userLoading) {
       const returnTo = router.query.returnTo as string | undefined;
-      if (returnTo) {
+      if (returnTo && returnTo.startsWith('/')) {
         router.push(decodeURIComponent(returnTo));
       } else {
         toast({
